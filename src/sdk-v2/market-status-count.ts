@@ -1,11 +1,4 @@
-import {
-  batterystationIndexer,
-  create,
-  mainnetIndexer,
-  mainnetRpc,
-} from "@zeitgeistpm/sdk";
-
-const ZTG = "10000000000";
+import { create, mainnetIndexer } from "@zeitgeistpm/sdk";
 
 async function main() {
   /**
