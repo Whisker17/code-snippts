@@ -30,9 +30,11 @@ const infos = [
   { tags: ["Politics"] },
 ];
 
+const tests = [{ tags: ["1"] }, { tags: ["1", "2"] }, { tags: [] }];
+
 async function main() {
   const tagsMap = Array.from(
-    infos
+    tests
       .reduce((arr, curr) => {
         curr.tags.forEach((index) => {
           if (!arr.has(index)) {
