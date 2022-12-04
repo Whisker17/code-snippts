@@ -28,16 +28,21 @@ async function main() {
 
   console.log(res);
 
-  const tagsMap = Array.from(
-    res
-      .reduce((arr, curr) => {
-        curr.forEach((index) => {
-            if arr.get(index)
-        });
-      }, new Map())
-      .values()
-  );
-
+  let i = 0;
+  const tagsMap = res.reduce((arr, curr) => {
+    if (curr.tags.length === 0) {
+      i++;
+    }
+    curr.tags.forEach((index) => {
+      if (!arr.has(index)) {
+        arr.set(index, 1);
+      } else {
+        arr.set(index, Number(arr.get(index)) + 1);
+      }
+    });
+    return arr;
+  }, new Map());
+  tagsMap.set("Others", i);
   console.log(tagsMap);
 }
 

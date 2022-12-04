@@ -33,26 +33,22 @@ const infos = [
 const tests = [{ tags: ["1"] }, { tags: ["1", "2"] }, { tags: [] }];
 
 async function main() {
-  const tagsMap = Array.from(
-    tests
-      .reduce((arr, curr) => {
-        curr.tags.forEach((index) => {
-          if (!arr.has(index)) {
-            if (index == "") {
-              arr.set("Others", 1);
-            } else {
-              arr.set(index, 1);
-            }
-          } else {
-            arr.set(index, Number(arr.get(index)) + 1);
-          }
-          return arr;
-        });
-      }, new Map())
-      .tags.values()
-  );
-
-  console.log(tagsMap);
+  let i = 0;
+  const res = infos.reduce((arr, curr) => {
+    if (curr.tags.length === 0) {
+      i++;
+    }
+    curr.tags.forEach((index) => {
+      if (!arr.has(index)) {
+        arr.set(index, 1);
+      } else {
+        arr.set(index, Number(arr.get(index)) + 1);
+      }
+    });
+    return arr;
+  }, new Map());
+  res.set("Others", i);
+  console.log(res);
 }
 
 main().catch((error) => {
