@@ -14,7 +14,7 @@ export const getActiveTagsCount = async (client: GraphQLClient) => {
     markets: {
       tags: string[];
     }[];
-  }>(activeTagsQuery);
+  }>(poolVolumeQuery);
 
   return response.markets;
 };

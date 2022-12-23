@@ -1,3 +1,5 @@
+import fetch from "node-fetch";
+
 export interface APPCounts {
   message: { count: number; date: string }[];
 }

@@ -1,4 +1,4 @@
-import { create, mainnetIndexer } from "@zeitgeistpm/sdk";
+import { create, mainnetIndexer } from "@zeitgeistpm/sdk-next";
 
 async function main() {
   /**

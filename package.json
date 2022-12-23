@@ -4,6 +4,7 @@
   "main": "index.js",
   "author": "whisker17",
   "license": "MIT",
+  "type": "module",
   "scripts": {
     "cli": "ts-node src/cli.ts",
     "test": "jest --coverage",
@@ -12,6 +13,7 @@
     "clean": "rm -rf dist build",
     "ts-node": "ts-node"
   },
+  "packageManager": "yarn@3.2.2",
   "devDependencies": {
     "@polkadot/api": "^9.8.1",
     "@polkadot/types": "^9.8.1",
@@ -28,7 +30,9 @@
     "typescript": "^4.9.3"
   },
   "dependencies": {
-    "@zeitgeistpm/sdk": "^2.6.6",
+    "decimal.js": "^10.4.2",
+    "@zeitgeistpm/sdk": "0.9.3",
+    "@zeitgeistpm/sdk-next": "npm:@zeitgeistpm/sdk@2.8.0",
     "axios": "^1.2.0",
     "graphql-request": "^5.0.0",
     "node-fetch": "^3.3.0",
