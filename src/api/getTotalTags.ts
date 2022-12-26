@@ -28,23 +28,23 @@ async function main() {
   console.log(res);
 
   let i = 0;
-  const tagsArray = res.reduce((arr, curr) => {
+  var tagsMaps = res.reduce((arr, curr) => {
     if (curr.tags === null || curr.tags.length === 0) {
       i++;
     } else {
       curr.tags.forEach((index) => {
-        if (!arr.includes(index)) {
-          arr.push(index, 1);
+        if (!arr.has(index)) {
+          arr.set(index, 1);
         } else {
-          arr[arr.indexOf(index)]++;
+          arr.set(index, arr.get(index) + 1);
         }
       });
     }
 
     return arr;
-  }, new Array());
-  tagsArray.push("Others", i);
-  console.log(tagsArray);
+  }, new Map());
+  tagsMaps.set("Others", i);
+  console.log(tagsMaps);
 }
 
 main().catch((error) => {
