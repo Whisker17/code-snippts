@@ -1,9 +1,8 @@
 import { gql, GraphQLClient } from "graphql-request";
-import { ZEITGEIST_GQL_URL } from "../const";
 
 const totalTagsQuery = gql`
   query totalTagsQuery {
-    markets {
+    markets(where: { status_eq: "Active" }) {
       tags
     }
   }
@@ -23,29 +22,29 @@ async function main() {
   /**
    * Fetching asset indexes works with both rpc and indexer mode.
    */
-  const endPoint = new GraphQLClient(ZEITGEIST_GQL_URL);
+  const endPoint = new GraphQLClient("https://processor.zeitgeist.pm/graphql");
   const res = await getTotalTagsCount(endPoint);
 
   console.log(res);
 
   let i = 0;
-  const tagsMap = res.reduce((arr, curr) => {
+  const tagsArray = res.reduce((arr, curr) => {
     if (curr.tags === null || curr.tags.length === 0) {
       i++;
     } else {
       curr.tags.forEach((index) => {
-        if (!arr.has(index)) {
-          arr.set(index, 1);
+        if (!arr.includes(index)) {
+          arr.push(index, 1);
         } else {
-          arr.set(index, Number(arr.get(index)) + 1);
+          arr[arr.indexOf(index)]++;
         }
       });
     }
 
     return arr;
-  }, new Map());
-  tagsMap.set("Others", i);
-  console.log(tagsMap);
+  }, new Array());
+  tagsArray.push("Others", i);
+  console.log(tagsArray);
 }
 
 main().catch((error) => {
