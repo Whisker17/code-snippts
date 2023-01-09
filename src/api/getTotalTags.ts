@@ -44,7 +44,8 @@ async function main() {
     return arr;
   }, new Map());
   tagsMaps.set("Others", i);
-  console.log(tagsMaps);
+  const tagsArray = Array.from(tagsMaps, ([tag, count]) => ({ tag, count }));
+  console.log(tagsArray);
 }
 
 main().catch((error) => {

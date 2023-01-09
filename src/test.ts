@@ -1,44 +1,26 @@
-const input = [
-  { tags: ["Politics"] },
-  { tags: ["Politics"] },
-  { tags: ["E-sports", "Space", "Technology"] },
-  { tags: ["North America", "Politics"] },
-  { tags: ["North America", "Politics"] },
-  { tags: ["North America", "Politics"] },
-  { tags: ["North America", "Politics"] },
-  { tags: ["Democracy", "Politics"] },
-  { tags: ["Elections", "Politics"] },
-  { tags: ["Crypto"] },
-  { tags: ["Elections", "Governance", "Politics"] },
-  { tags: ["Crypto"] },
-  { tags: ["Crypto"] },
-  { tags: ["Democracy", "Politics"] },
-  {
-    tags: [
-      "COVID-19",
-      "China",
-      "Crypto",
-      "Democracy",
-      "North America",
-      "Politics",
-    ],
-  },
-  { tags: [] },
-  { tags: ["COVID-19"] },
-  { tags: ["Space", "Technology"] },
-  { tags: ["Politics"] },
+const data = [
+  { tag: "Politics", count: 12 },
+  { tag: "E-sports", count: 2 },
+  { tag: "Space", count: 1 },
+  { tag: "Technology", count: 1 },
+  { tag: "North America", count: 5 },
+  { tag: "Democracy", count: 3 },
+  { tag: "Elections", count: 2 },
+  { tag: "Crypto", count: 4 },
+  { tag: "Governance", count: 1 },
+  { tag: "COVID-19", count: 1 },
+  { tag: "China", count: 1 },
+  { tag: "Others", count: 3 },
 ];
 
 async function main() {
-  var res = input.reduce((acc, curr) => {
-    curr.tags.forEach((value) => {
-      acc.push({ tag: value, count: 1 });
-    });
-  }, new Array());
-  console.log(res);
+  data.splice(
+    data.findIndex((item) => item.tag === "Others"),
+    1
+  );
+  console.log(data);
 }
 
-main().catch((error) => {
-  console.log("ERROR");
-  console.log(error);
-});
+main()
+  .catch(console.error)
+  .finally(() => process.exit());
