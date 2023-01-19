@@ -1,49 +1,41 @@
-import { gql, GraphQLClient } from "graphql-request";
-import { ZEITGEIST_GQL_URL } from "../const";
+import axios from "axios";
 
-const poolVolumeQuery = gql`
-  query poolVolumeQuery {
-    markets(where: { status_eq: "Active" }) {
-      tags
-    }
-  }
-`;
+export const getTop = async () => {
+  const result = await axios.post("https://processor.zeitgeist.pm/graphql", {
+    query: `query TimeBasedVolume {
+      historicalPools(
+        where: {
+          volume_gt: "0"
+          event_contains: "Swap"
+          timestamp_gt: "2022-11-18T00:00:00Z"
+          timestamp_lt: "2022-12-25T00:00:00Z"
+        }
+        orderBy: poolId_DESC
+      ) {
+        poolId
+        dVolume
+        timestamp
+      }
+    }`,
+  });
 
-export const getActiveTagsCount = async (client: GraphQLClient) => {
-  const response = await client.request<{
-    markets: {
-      tags: string[];
-    }[];
-  }>(poolVolumeQuery);
-
-  return response.markets;
+  return Array.from(
+    result.data.data.historicalPools.reduce(
+      (pool, { poolId, dVolume }) =>
+        pool.set(poolId, (pool.get(poolId) || 0) + Number(dVolume)),
+      new Map()
+    ),
+    ([poolId, dVolume]) => ({ poolId, dVolume })
+  ).sort((a, b) => b.dVolume - a.dVolume);
 };
 
 async function main() {
   /**
    * Fetching asset indexes works with both rpc and indexer mode.
    */
-  const endPoint = new GraphQLClient(ZEITGEIST_GQL_URL);
-  const res = await getActiveTagsCount(endPoint);
+  const res = await getTop();
 
   console.log(res);
-
-  let i = 0;
-  const tagsMap = res.reduce((arr, curr) => {
-    if (curr.tags.length === 0) {
-      i++;
-    }
-    curr.tags.forEach((index) => {
-      if (!arr.has(index)) {
-        arr.set(index, 1);
-      } else {
-        arr.set(index, Number(arr.get(index)) + 1);
-      }
-    });
-    return arr;
-  }, new Map());
-  tagsMap.set("Others", i);
-  console.log(tagsMap);
 }
 
 main().catch((error) => {
